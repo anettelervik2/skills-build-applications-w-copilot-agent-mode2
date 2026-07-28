@@ -9,6 +9,10 @@ const readItems = (payload) => {
   return []
 }
 
+const leaderboardEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+  : null
+
 function Leaderboard({ apiBaseUrl }) {
   const [entries, setEntries] = useState([])
   const [status, setStatus] = useState('loading')
@@ -19,7 +23,7 @@ function Leaderboard({ apiBaseUrl }) {
 
     const loadLeaderboard = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/leaderboard/`)
+        const response = await fetch(leaderboardEndpoint ?? `${apiBaseUrl}/leaderboard/`)
         if (!response.ok) throw new Error(`Request failed with ${response.status}`)
         const payload = await response.json()
 

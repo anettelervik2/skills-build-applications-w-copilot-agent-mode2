@@ -9,6 +9,10 @@ const readItems = (payload) => {
   return []
 }
 
+const usersEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : null
+
 function Users({ apiBaseUrl }) {
   const [users, setUsers] = useState([])
   const [status, setStatus] = useState('loading')
@@ -19,7 +23,7 @@ function Users({ apiBaseUrl }) {
 
     const loadUsers = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/users/`)
+        const response = await fetch(usersEndpoint ?? `${apiBaseUrl}/users/`)
         if (!response.ok) throw new Error(`Request failed with ${response.status}`)
         const payload = await response.json()
 

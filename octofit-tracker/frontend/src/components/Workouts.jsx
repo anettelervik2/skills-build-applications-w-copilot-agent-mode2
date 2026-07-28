@@ -9,6 +9,10 @@ const readItems = (payload) => {
   return []
 }
 
+const workoutsEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+  : null
+
 function Workouts({ apiBaseUrl }) {
   const [workouts, setWorkouts] = useState([])
   const [status, setStatus] = useState('loading')
@@ -19,7 +23,7 @@ function Workouts({ apiBaseUrl }) {
 
     const loadWorkouts = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/workouts/`)
+        const response = await fetch(workoutsEndpoint ?? `${apiBaseUrl}/workouts/`)
         if (!response.ok) throw new Error(`Request failed with ${response.status}`)
         const payload = await response.json()
 

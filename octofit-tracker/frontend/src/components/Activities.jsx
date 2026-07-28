@@ -9,6 +9,10 @@ const readItems = (payload) => {
   return []
 }
 
+const activitiesEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+  : null
+
 const formatDate = (value) => {
   if (!value) return 'Not recorded'
   return new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value))
@@ -24,7 +28,7 @@ function Activities({ apiBaseUrl }) {
 
     const loadActivities = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/activities/`)
+        const response = await fetch(activitiesEndpoint ?? `${apiBaseUrl}/activities/`)
         if (!response.ok) throw new Error(`Request failed with ${response.status}`)
         const payload = await response.json()
 

@@ -9,6 +9,10 @@ const readItems = (payload) => {
   return []
 }
 
+const teamsEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+  : null
+
 function Teams({ apiBaseUrl }) {
   const [teams, setTeams] = useState([])
   const [status, setStatus] = useState('loading')
@@ -19,7 +23,7 @@ function Teams({ apiBaseUrl }) {
 
     const loadTeams = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/teams/`)
+        const response = await fetch(teamsEndpoint ?? `${apiBaseUrl}/teams/`)
         if (!response.ok) throw new Error(`Request failed with ${response.status}`)
         const payload = await response.json()
 
